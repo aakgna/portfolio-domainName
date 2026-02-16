@@ -30,8 +30,9 @@ export interface PortfolioItem {
 	imageUrl?: string;
 	visible: boolean;
 	order: number;
-	createdAt: Timestamp;
-	updatedAt: Timestamp;
+	// Timestamps can be Timestamp objects (from Firestore) or ISO strings (serialized for Client Components)
+	createdAt: Timestamp | string;
+	updatedAt: Timestamp | string;
 }
 
 export interface PortfolioSection {
@@ -124,13 +125,16 @@ export const getSectionItems = async (
 		);
 		const querySnapshot = await getDocs(q);
 
-		const items = querySnapshot.docs.map(
-			(doc) =>
-				({
-					id: doc.id,
-					...doc.data(),
-				} as PortfolioItem)
-		);
+		const items = querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return {
+				id: doc.id,
+				...data,
+				// Convert Timestamp objects to ISO strings for Client Components
+				createdAt: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+				updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+			} as PortfolioItem;
+		});
 
 		// Sort by order in memory
 		return items.sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -148,13 +152,16 @@ export const getAllSectionItems = async (
 		const q = query(collection(db, sectionName), orderBy("order", "asc"));
 		const querySnapshot = await getDocs(q);
 
-		return querySnapshot.docs.map(
-			(doc) =>
-				({
-					id: doc.id,
-					...doc.data(),
-				} as PortfolioItem)
-		);
+		return querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return {
+				id: doc.id,
+				...data,
+				// Convert Timestamp objects to ISO strings for Client Components
+				createdAt: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+				updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+			} as PortfolioItem;
+		});
 	} catch (error) {
 		console.error(`Error getting all ${sectionName} items:`, error);
 		return [];

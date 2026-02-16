@@ -2,10 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { PortfolioItem } from '@/lib/firestore';
+import { normalizeImagePath } from '@/lib/imageUtils';
 import { FileText, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import AnimatedSection from '@/components/AnimatedSection';
 import AnimatedCard from '@/components/AnimatedCard';
+import ImageWithBackground from '@/components/ImageWithBackground';
 
 interface PublicationsSectionProps {
   publications: PortfolioItem[];
@@ -39,12 +41,12 @@ export default function PublicationsSection({ publications }: PublicationsSectio
                 <div className="flex flex-col md:flex-row">
                   {/* Image Section */}
                   {item.imageUrl ? (
-                    <div className="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
-                      <img
+                    <div className="md:w-1/3 relative overflow-hidden flex items-center justify-center p-4">
+                      <ImageWithBackground
                         src={item.imageUrl}
                         alt={item.title || "Publication"}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
+                        className="w-auto h-auto max-w-full max-h-full object-contain"
+                        containerClassName="w-full h-full flex items-center justify-center"
                       />
                     </div>
                   ) : (
@@ -56,7 +58,16 @@ export default function PublicationsSection({ publications }: PublicationsSectio
                   {/* Content Section */}
                   <div className="flex-1 p-6 md:p-8">
                     <div className="flex items-start gap-4">
-                      {!item.imageUrl && (
+                      {item.imageUrl ? (
+                        <div className="flex-shrink-0">
+                          <img
+                            src={normalizeImagePath(item.imageUrl)}
+                            alt={item.title || "Publication"}
+                            className="w-12 h-12 rounded-xl object-cover shadow-lg"
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : (
                         <div className="flex-shrink-0">
                           <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                             <FileText className="w-6 h-6 text-white" />

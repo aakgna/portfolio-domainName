@@ -138,6 +138,7 @@ export default function AdminDashboard() {
 			technologies: [],
 			skills: [],
 			link: "",
+			imageUrl: "",
 			visible: true,
 			order: 0,
 			createdAt: Timestamp.now(),
@@ -180,6 +181,7 @@ export default function AdminDashboard() {
 				technologies: editingItem.technologies || [],
 				skills: editingItem.skills || [],
 				link: editingItem.link || "",
+				imageUrl: editingItem.imageUrl || "",
 				visible: editingItem.visible !== undefined ? editingItem.visible : true,
 				order,
 			};
@@ -729,17 +731,17 @@ function ItemEditor({
 					{/* Image URL */}
 					<div>
 						<label className="block text-sm font-medium text-gray-700 mb-1">
-							Image URL (optional)
+							Image URL or Local Path (optional)
 						</label>
 						<input
-							type="url"
+							type="text"
 							value={item.imageUrl || ""}
 							onChange={(e) => onChange({ imageUrl: e.target.value })}
 							className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-900 text-gray-900"
-							placeholder="https://example.com/image.jpg"
+							placeholder="https://example.com/image.jpg or /Kracked_logo.png"
 						/>
 						<p className="mt-1 text-xs text-gray-500">
-							Add an image URL to display a custom image for this item
+							Add an image URL (https://...) or local path from public folder (e.g., /Kracked_logo.png or portfolio-domainName/public/Kracked_logo.png)
 						</p>
 					</div>
 

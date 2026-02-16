@@ -2,10 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { PortfolioItem } from '@/lib/firestore';
+import { normalizeImagePath } from '@/lib/imageUtils';
 import { ExternalLink, Code, Github } from 'lucide-react';
 import Link from 'next/link';
 import AnimatedSection from '@/components/AnimatedSection';
 import AnimatedCard from '@/components/AnimatedCard';
+import ImageWithBackground from '@/components/ImageWithBackground';
 
 interface ProjectsSectionProps {
   projects: PortfolioItem[];
@@ -38,12 +40,12 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
               >
                 {/* Project Image */}
                 {item.imageUrl ? (
-                  <div className="h-48 relative overflow-hidden">
-                    <img
+                  <div className="w-full relative overflow-hidden flex items-center justify-center p-4">
+                    <ImageWithBackground
                       src={item.imageUrl}
                       alt={item.title || "Project"}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
+                      className="w-auto h-auto max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      containerClassName="w-full h-full flex items-center justify-center"
                     />
                   </div>
                 ) : (
