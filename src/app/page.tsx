@@ -8,6 +8,7 @@ import PublicationsSection from "@/components/portfolio/PublicationsSection";
 import SkillsSection from "@/components/portfolio/SkillsSection";
 import ContactsSection from "@/components/portfolio/ContactsSection";
 import HeroSection from "@/components/portfolio/HeroSection";
+import ParticleBackground from "@/components/3D/ParticleBackground";
 
 // Enable static generation with revalidation
 export const revalidate = 3600; // Revalidate every hour
@@ -17,7 +18,8 @@ export default async function Home() {
 	const portfolioData = await getPortfolioData();
 
 	return (
-		<div className="min-h-screen bg-white">
+		<div className="min-h-screen relative">
+			<ParticleBackground />
 			<Navigation />
 			<HeroSection />
 			{/* Portfolio Sections */}
